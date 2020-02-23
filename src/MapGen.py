@@ -8,14 +8,13 @@ import json
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
 
-
 c_key = "0iyK7MB6jiQ1KM4267bhOyNNk"
 c_sec = "bynOPvxzK74YjJtbXknhkE26MO2EIIbm86tiPegidIODYNsbP0"
 
 auth = tweepy.OAuthHandler(c_key, c_sec)
 api = tweepy.API(auth)
 
-hashtag = '#bernie2020'
+hashtag = '#trump2020'
 
 def mapsize(n):
     return 5+20*abs(n)
@@ -48,6 +47,6 @@ for tweet in tweepy.Cursor(api.search, q = hashtag).items(75):
     except JSONDecodeError:
         continue
 
-fig.suptitle(hashtag, fontsize=20)
+fig.subplots_adjust(left=0,right=1,bottom=0,top=1)
 plt.savefig(hashtag + '.png')
 plt.show()
