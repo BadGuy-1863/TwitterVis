@@ -12,9 +12,11 @@ import os
 c_key = "0iyK7MB6jiQ1KM4267bhOyNNk"
 c_sec = "bynOPvxzK74YjJtbXknhkE26MO2EIIbm86tiPegidIODYNsbP0"
 
+#connect to twitter API
 auth = tweepy.OAuthHandler(c_key, c_sec)
 api = tweepy.API(auth)
 
+#map sentiment to point size and color
 def mapsize(n):
     return 5+20*abs(n)
 
@@ -26,19 +28,26 @@ def mapcolor(n):
     else:
         return 'b'
 
-rootdir = 'C:/Users/there/PycharmProjects/Misc/TwitterXSports/arab_spring_csv'
+direct = 'arab_spring_csv'
+rootdir = os.path.abspath(direct)
 
+#iterate through all csv
 for subdir, dirs, files in os.walk(rootdir):
     for file in files:
         print(file)
+        #initialize map
         fig = plt.figure(figsize=(8, 8))
         m = Basemap()
         m.drawcoastlines()
+        #random sample of size s tweets
         n = sum(1 for line in open(os.path.join(subdir, file), 'rt', encoding='utf-8'))  # number of records in file (excludes header)
         s = 65  # desired sample size
         skip = sorted(
             random.sample(range(1, n + 1), n - s))  # the 0-indexed header will not be included in the skip list
+
         data = pd.read_csv(os.path.join(subdir, file), sep = ';',  encoding='utf-8', names = ['date', 'user', 'text'], skiprows = skip)
+
+        #user twitter api to convert from tweets to plottable data
         for index, row in data.iterrows():
             print(index)
             tweet = row['text']
@@ -58,4 +67,5 @@ for subdir, dirs, files in os.walk(rootdir):
                 continue
         name = os.path.splitext(file)[0][11:]
         fig.suptitle(name.split('-')[1] + '-' + name.split('-')[0], fontsize=20)
+        #saves map as month + 15 - year.
         plt.savefig(name.split('-')[1] + '-' + name.split('-')[0]+'.png')

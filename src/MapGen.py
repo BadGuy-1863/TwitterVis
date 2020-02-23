@@ -14,8 +14,10 @@ c_sec = "bynOPvxzK74YjJtbXknhkE26MO2EIIbm86tiPegidIODYNsbP0"
 auth = tweepy.OAuthHandler(c_key, c_sec)
 api = tweepy.API(auth)
 
+#hashtag to generate a map of
 hashtag = '#bernie2020'
 
+#maps polarity to usable data
 def mapsize(n):
     return 5+20*abs(n)
 
@@ -27,10 +29,12 @@ def mapcolor(n):
     else:
         return 'b'
 
+#initialize map
 fig = plt.figure(figsize=(8, 8))
 m = Basemap()
 m.drawcoastlines()
 
+#iterate through search results for the hashtag
 for tweet in tweepy.Cursor(api.search, q = hashtag).items(75):
     data = TextBlob(tweet.text)
     sent = data.sentiment
@@ -46,7 +50,7 @@ for tweet in tweepy.Cursor(api.search, q = hashtag).items(75):
         continue
     except JSONDecodeError:
         continue
-
+#saves the map with some whitespace trimmed
 fig.subplots_adjust(left=0,right=1,bottom=0,top=1)
 plt.savefig(hashtag + '.png')
 plt.show()
