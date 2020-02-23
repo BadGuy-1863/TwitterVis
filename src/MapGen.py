@@ -48,5 +48,6 @@ for tweet in tweepy.Cursor(api.search, q = hashtag).items(75):
     except JSONDecodeError:
         continue
 
+fig.suptitle(hashtag, fontsize=20)
 plt.savefig(hashtag + '.png')
 plt.show()
