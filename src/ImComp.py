@@ -1,5 +1,7 @@
 #Work In Progress, build from here
 import os
+
+
 from skimage.measure import compare_ssim as ssim
 import cv2
 
@@ -10,19 +12,29 @@ def compare_images(imageA, imageB):
     return s
 
 
-test = cv2.imread("#bernie2020.png")
+test_color = cv2.imread("#bernie2020.png")
 
 # convert the images to grayscale
-test = cv2.cvtColor(test, cv2.COLOR_BGR2GRAY)
+test = cv2.cvtColor(test_color, cv2.COLOR_BGR2GRAY)
+t = test[250:500, 100:700]
 
-rootdir = 'C:/Users/there/PycharmProjects/Misc/TwitterXSports/src/ims'
+rootdir = 'C:/Users/there/PycharmProjects/Misc/TwitterXSports/src/ims/'
 dummy = []
+files_list = []
 for subdir, dirs, files in os.walk(rootdir):
     for file in files:
-        comp = cv2.imread(file)
-        comp = cv2.cvtColor(file, cv2.Color_BGR2Gray)
-        dummy.append(compare_images(test,comp))
-print(dummy)
+        files_list.append(subdir + '/'+ file)
+        cmp = cv2.imread(subdir + '/' + file)
+        print(subdir + '/' + file)
+        comp = cv2.cvtColor(cmp, cv2.COLOR_BGR2GRAY)
+        c = comp[0:250, 0:600]
+        dummy.append(compare_images(t,c))
+
+cv2.imshow('test',test_color)
+cv2.waitKey(0)
+display = cv2.imread(files_list[dummy.index(max(dummy))])
+cv2.imshow('most_similar',display)
+cv2.waitKey(0)
 
 # loop over the images
 '''for (i, (name, image)) in enumerate(images):

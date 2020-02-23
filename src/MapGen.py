@@ -14,7 +14,7 @@ c_sec = "bynOPvxzK74YjJtbXknhkE26MO2EIIbm86tiPegidIODYNsbP0"
 auth = tweepy.OAuthHandler(c_key, c_sec)
 api = tweepy.API(auth)
 
-hashtag = '#trump2020'
+hashtag = '#bernie2020'
 
 def mapsize(n):
     return 5+20*abs(n)
